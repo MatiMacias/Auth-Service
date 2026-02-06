@@ -1,5 +1,8 @@
 package com.projects.auth_service.service;
 
+import com.projects.auth_service.model.Role;
+import com.projects.auth_service.model.User;
+import com.projects.auth_service.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -7,28 +10,41 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public AuthService(PasswordEncoder passwordEncoder) {
+    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
-    public String register(String email, String password){
+    public String register(String username,String email, String password){
 
-        String hashedPassword = passwordEncoder.encode(password)
+        if(userRepository.findByUsername(username).isPresent()){
+            throw new RuntimeException("The user is already exists");
+        }
 
-        return "dommy-token";
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(Role.USER);
+
+        userRepository.save(user);
+
+        return "The user has successfully registered";
     }
 
     public String login(String username, String password){
 
-        String storedHash = "hash-falso";
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("The user is already exists"));
 
-        boolean matches = passwordEncoder.matches(password, storedHash);
+        boolean matches = passwordEncoder.matches(password, user.getPassword());
 
         if(!matches){
-            throw new RuntimeException("Credenciales invalidas");
+            throw new RuntimeException("Invalid credentials");
         }
 
-        return "dommy-token";
+        return "Login OK";
     }
 }
