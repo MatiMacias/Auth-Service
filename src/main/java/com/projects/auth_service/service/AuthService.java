@@ -11,10 +11,12 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, JwtService jwtService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public String register(String username,String email, String password){
@@ -45,6 +47,6 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return "Login OK";
+        return jwtService.generateToken(user);
     }
 }
