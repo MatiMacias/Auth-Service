@@ -140,10 +140,5 @@ spring.datasource.password=YOUR_PASSWORD
 <hr />
 
 <h2>Autor</h2>
-<p>Matías</p>
-
-<hr />
-
-<h2>Autor</h2>
 <p>Desarrollado por Matías Macías 🇦🇷 Developer</p>
 <p>Proyecto creado con fines educativos y como parte de un portfolio profesional.</p>
