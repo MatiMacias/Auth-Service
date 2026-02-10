@@ -80,7 +80,8 @@
 <pre>POST /auth/register</pre>
 <pre>{
   "username": "user",
-  "password": "1234"
+  "password": "1234",
+  "email": "user@mail.com
 }</pre>
 
 <h4>Login</h4>
