@@ -25,5 +25,5 @@ logging:
 
 
 jwt:
-  secret: super-secret-key
-  expiration: 900000
+  secret: "mi_clave_super_secreta_de_minimo_32_caracteres"
+  expiration: 86400000

@@ -1,5 +1,6 @@
 package com.projects.auth_service.service;
 
+import com.projects.auth_service.dto.RegisterRequest;
 import com.projects.auth_service.model.Role;
 import com.projects.auth_service.model.User;
 import com.projects.auth_service.repository.UserRepository;
@@ -19,16 +20,16 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String register(String username,String email, String password){
+    public String register(RegisterRequest request){
 
-        if(userRepository.findByUsername(username).isPresent()){
+        if(userRepository.findByUsername(request.getUsername()).isPresent()){
             throw new RuntimeException("The user is already exists");
         }
 
         User user = new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
 
         userRepository.save(user);
@@ -39,7 +40,7 @@ public class AuthService {
     public String login(String username, String password){
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("The user is already exists"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         boolean matches = passwordEncoder.matches(password, user.getPassword());
 
