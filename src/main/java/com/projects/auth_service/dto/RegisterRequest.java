@@ -3,7 +3,7 @@ package com.projects.auth_service.dto;
 public class RegisterRequest {
 
     private String username;
-    private String Password;
+    private String password;
     private String email;
 
     public RegisterRequest() {
@@ -19,11 +19,11 @@ public class RegisterRequest {
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getEmail() {
